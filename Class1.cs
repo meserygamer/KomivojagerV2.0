@@ -45,20 +45,22 @@ namespace KomivojagerV2._0
         }
         private List<int>? ListOfNextDot(int[] VectorOfDot) //Возвращает список потомков
         {
+            int[] VectorOfDotCopy = new int[VectorOfDot.Length]; //Создаём копию, так как все элементы зубчатого массива являются ссылками
+            Array.Copy(VectorOfDot, VectorOfDotCopy, VectorOfDot.Length);
             List<int> ListOfMaybeDot, ListOfMaybeDotCopy; //Список возможных потомков (Он изменяется при работе), и его копия(Не изменяется, нужна чтобы проверить все точки и вычеркнуть из оригинала)
-            if(Min(VectorOfDot) is not null) //Если предполагаемые точки существуют, то идём дальше, иначе возвращаем null, так как граф закончен
+            if(Min(VectorOfDotCopy) is not null) //Если предполагаемые точки существуют, то идём дальше, иначе возвращаем null, так как граф закончен
             {
-                ListOfMaybeDot = PoiskDotSMinMarsh((int)Min(VectorOfDot), VectorOfDot); //Составляем набор точек
+                ListOfMaybeDot = PoiskDotSMinMarsh((int)Min(VectorOfDotCopy), VectorOfDotCopy); //Составляем набор точек
                 ListOfMaybeDotCopy = new List<int>(ListOfMaybeDot);
                 foreach (var i in ListOfMaybeDotCopy) //Проходим по всем предполагаемым точкам
                 {
                     if(ToBeDot(this, i)) //Если точка уже встречалась вычёркиваем
                     {
                         ListOfMaybeDot.Remove(i);
-                        VectorOfDot[(i - 1)] = 0;
+                        VectorOfDotCopy[(i - 1)] = 0;
                     }
                 }
-                if (ListOfMaybeDot.Count == 0) return ListOfNextDot(VectorOfDot);
+                if (ListOfMaybeDot.Count == 0) return ListOfNextDot(VectorOfDotCopy);
                 else return ListOfMaybeDot;
             }
             return null;
