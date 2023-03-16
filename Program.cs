@@ -25,13 +25,23 @@
             ZapolnTranTable();
             Graphs = new TreeNode[KolVersh];
         }
-        public void BodyOfMethod()
+        public void BodyOfMethod() //Тело метода
         {
+            int min = 0;
             //TreeNode.TableOfTransport = this.TableOfTransport;
             for (int i = 0; i < KolVersh; i++)
             {
                 Graphs[i] = new TreeNode(i+1, TableOfTransport);
+                if (Graphs[i].Target < Graphs[min].Target) min = i;
             }
+            Console.WriteLine($"Длинна кротчайшего маршрута: {Graphs[min].Target}");
+            string Marsh = "";
+            foreach(var i in Graphs[min].TargetWay)
+            {
+                Marsh = Marsh + i + "-";
+            }
+            Marsh = Marsh[0..(Marsh.Length - 1)];
+            Console.WriteLine($"Кротчайший маршрут: {Marsh}");
         }
         private void ZapolnTranTable() //Для заполнения транспортной таблицы
         {
